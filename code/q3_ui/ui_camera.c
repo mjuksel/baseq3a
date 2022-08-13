@@ -243,6 +243,13 @@ static void Camera_MenuInit(void){
 	Camera_GetConfig();
 }
 
+/* Camera_Cache */
+void Camera_Cache(void){
+	trap_R_RegisterShaderNoMip(ART_BACKGROUND);
+	trap_R_RegisterShaderNoMip(ART_BACK0);
+	trap_R_RegisterShaderNoMip(ART_BACK1);
+}
+
 /* UI_CameraMenu */
 void UI_CameraMenu(void){
 	Camera_MenuInit();
