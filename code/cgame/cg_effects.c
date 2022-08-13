@@ -520,6 +520,14 @@ void CG_Bleed( const vec3_t origin, int entityNum ) {
 
 	ex->refEntity.customShader = cgs.media.bloodExplosionShader;
 
+	// mjx - rainbow blood on hit
+	if ( cg_rainbowBlood.integer ) {
+		ex->refEntity.shaderRGBA[0] = rand();
+		ex->refEntity.shaderRGBA[1] = rand();
+		ex->refEntity.shaderRGBA[2] = rand();
+		ex->refEntity.shaderRGBA[3] = 255;
+	}
+
 	// don't show player's own blood in view
 	if ( entityNum == cg.snap->ps.clientNum ) {
 		ex->refEntity.renderfx |= RF_THIRD_PERSON;

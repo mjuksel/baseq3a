@@ -105,6 +105,14 @@ void CG_BloodTrail( localEntity_t *le ) {
 	vec3_t	newOrigin;
 	localEntity_t	*blood;
 
+	// mjx - rainbow blood
+	int	r = 1, g = 0, b = 0, a = 1;
+	if ( cg_rainbowBlood.integer ) {
+		r = rand();
+		g = rand();
+		b = rand();
+	}
+
 	step = 150;
 	t = step * ( (cg.time - cg.frametime + step ) / step );
 	t2 = step * ( cg.time / step );
@@ -114,7 +122,7 @@ void CG_BloodTrail( localEntity_t *le ) {
 
 		blood = CG_SmokePuff( newOrigin, vec3_origin, 
 					  20,		// radius
-					  1, 1, 1, 1,	// color
+					  r, g, b, a,	// color
 					  2000,		// trailTime
 					  t,		// startTime
 					  0,		// fadeInTime
@@ -136,11 +144,19 @@ CG_FragmentBounceMark
 void CG_FragmentBounceMark( localEntity_t *le, trace_t *trace ) {
 	int			radius;
 
+	// mjx - rainbow blood
+	int	r = 1, g = 0, b = 0, a = 1;
+	if ( cg_rainbowBlood.integer ) {
+		r = rand();
+		g = rand();
+		b = rand();
+	}
+
 	if ( le->leMarkType == LEMT_BLOOD ) {
 
 		radius = 16 + (rand()&31);
 		CG_ImpactMark( cgs.media.bloodMarkShader, trace->endpos, trace->plane.normal, random()*360,
-			1,1,1,1, qtrue, radius, qfalse );
+			r,g,b,a, qtrue, radius, qfalse );
 	} else if ( le->leMarkType == LEMT_BURN ) {
 
 		radius = 8 + (rand()&15);

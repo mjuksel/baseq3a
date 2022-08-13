@@ -30,7 +30,8 @@ GAME OPTIONS MENU
 #define ID_FORCEMODEL			135
 #define ID_DRAWTEAMOVERLAY		136
 #define ID_ALLOWDOWNLOAD			137
-#define ID_BACK					138
+#define ID_RAINBOWS					138
+#define ID_BACK					139
 
 #define	NUM_CROSSHAIRS			10
 
@@ -56,6 +57,8 @@ typedef struct {
 	menubitmap_s		back;
 
 	qhandle_t			crosshairShader[NUM_CROSSHAIRS];
+
+	menuradiobutton_s	rainbowblood;
 } preferences_t;
 
 static preferences_t s_preferences;
@@ -81,6 +84,7 @@ static void Preferences_SetMenuItems( void ) {
 	s_preferences.forcemodel.curvalue		= trap_Cvar_VariableValue( "cg_forcemodel" ) != 0;
 	s_preferences.drawteamoverlay.curvalue	= Com_Clamp( 0, 3, trap_Cvar_VariableValue( "cg_drawTeamOverlay" ) );
 	s_preferences.allowdownload.curvalue	= trap_Cvar_VariableValue( "cl_allowDownload" ) != 0;
+	s_preferences.rainbowblood.curvalue	= trap_Cvar_VariableValue( "cg_rainbowBlood" ) != 0;
 }
 
 
@@ -140,6 +144,10 @@ static void Preferences_Event( void* ptr, int notification ) {
 	case ID_ALLOWDOWNLOAD:
 		trap_Cvar_SetValue( "cl_allowDownload", s_preferences.allowdownload.curvalue );
 		trap_Cvar_SetValue( "sv_allowDownload", s_preferences.allowdownload.curvalue );
+		break;
+
+	case ID_RAINBOWS:
+		trap_Cvar_SetValue( "cg_rainbowBlood", s_preferences.rainbowblood.curvalue );
 		break;
 
 	case ID_BACK:
@@ -254,6 +262,15 @@ static void Preferences_MenuInit( void ) {
 	s_preferences.simpleitems.generic.x	          = PREFERENCES_X_POS;
 	s_preferences.simpleitems.generic.y	          = y;
 
+	y += BIGCHAR_HEIGHT+2;
+	s_preferences.rainbowblood.generic.type       = MTYPE_RADIOBUTTON;
+	s_preferences.rainbowblood.generic.name       = "Rainbow Blood:";
+	s_preferences.rainbowblood.generic.flags      = QMF_PULSEIFFOCUS|QMF_SMALLFONT;
+	s_preferences.rainbowblood.generic.callback   = Preferences_Event;
+	s_preferences.rainbowblood.generic.id         = ID_RAINBOWS;
+	s_preferences.rainbowblood.generic.x          = PREFERENCES_X_POS;
+	s_preferences.rainbowblood.generic.y          = y;
+
 	y += BIGCHAR_HEIGHT;
 	s_preferences.wallmarks.generic.type          = MTYPE_RADIOBUTTON;
 	s_preferences.wallmarks.generic.name	      = "Marks on Walls:";
@@ -363,6 +380,8 @@ static void Preferences_MenuInit( void ) {
 	Menu_AddItem( &s_preferences.menu, &s_preferences.forcemodel );
 	Menu_AddItem( &s_preferences.menu, &s_preferences.drawteamoverlay );
 	Menu_AddItem( &s_preferences.menu, &s_preferences.allowdownload );
+
+	Menu_AddItem( &s_preferences.menu, &s_preferences.rainbowblood );
 
 	Menu_AddItem( &s_preferences.menu, &s_preferences.back );
 

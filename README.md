@@ -20,6 +20,12 @@ Unofficial Quake III Arena gamecode patch
  * damage-based hitsounds
  * colored skins
  * high-quality proportional font renderer
+ * fixed playermodel background ([src](https://github.com/ec-/baseq3a/commit/8cb8df5bc0aff59d10762503aa2f04349b50adcc))
+ * map selection ui changes ([src](https://neogeographica.com/site/pages/mods/moremaps.html))
+   * 12 maps per selection screen instead of 4
+   * up to 256 maps per gametype
+   * end of array bug fixed
+ * rainbow bloodtrails in preferences
 
 # TODO:
 

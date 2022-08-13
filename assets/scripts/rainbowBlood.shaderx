@@ -1,0 +1,32 @@
+bloodMark
+{
+	nopicmip // make sure a border remains
+	polygonOffset
+	{
+		clampmap gfx/damage/blood_stain2.png
+		blendFunc blend
+		rgbGen		vertex
+	}
+}
+
+bloodTrail
+{
+	nopicmip // make sure a border remains
+	entityMergable // allow all the sprites to be merged together
+	{
+		clampmap gfx/damage/blood_spurt2.png
+		blendFunc blend
+		rgbGen		vertex
+	}
+}
+
+bloodExplosion // spurt of blood at point of impact
+{
+	nopicmip // make sure a border remains
+	entityMergable // allow all the sprites to be merged together
+	{
+		animmap 5 models/weaphits/blood2012.png models/weaphits/blood2022.png models/weaphits/blood2032.png models/weaphits/blood2042.png models/weaphits/blood2052.png
+		blendfunc blend
+		rgbGen		vertex
+	}
+}
