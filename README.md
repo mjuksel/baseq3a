@@ -29,6 +29,7 @@ Unofficial Quake III Arena gamecode patch
  * added camera menu
    * toggle between first/third person camera
    * adjust angle, range, height and panning of the 3rd person camera
+ * replace tga textures with png, shaves off 13mb
 
 # TODO:
 
