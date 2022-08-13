@@ -27,6 +27,8 @@ INGAME MENU
 #define ID_RESUME				18
 #define ID_TEAMORDERS			19
 
+#define ID_CAMERA	20
+
 
 typedef struct {
 	menuframework_s	menu;
@@ -42,6 +44,8 @@ typedef struct {
 	menutext_s		teamorders;
 	menutext_s		quit;
 	menutext_s		resume;
+
+	menutext_s		camera;
 } ingamemenu_t;
 
 static ingamemenu_t	s_ingame;
@@ -93,6 +97,11 @@ void InGame_Event( void *ptr, int notification ) {
 
 	case ID_SETUP:
 		UI_SetupMenu();
+		break;
+
+	// mjx thirdPerson
+	case ID_CAMERA:
+		UI_CameraMenu();
 		break;
 
 	case ID_LEAVEARENA:
@@ -237,6 +246,18 @@ void InGame_MenuInit( void ) {
 	s_ingame.setup.color				= color_red;
 	s_ingame.setup.style				= UI_CENTER|UI_SMALLFONT;
 
+	// mjx thirdPerson
+	y += INGAME_MENU_VERTICAL_SPACING;
+	s_ingame.camera.generic.type = MTYPE_PTEXT;
+	s_ingame.camera.generic.flags		= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
+	s_ingame.camera.generic.x			= 320;
+	s_ingame.camera.generic.y			= y;
+	s_ingame.camera.generic.id			= ID_CAMERA;
+	s_ingame.camera.generic.callback		= InGame_Event;
+	s_ingame.camera.string				= "CAMERA";
+	s_ingame.camera.color				= color_red;
+	s_ingame.camera.style				= UI_CENTER|UI_SMALLFONT;
+
 	y += INGAME_MENU_VERTICAL_SPACING;
 	s_ingame.server.generic.type		= MTYPE_PTEXT;
 	s_ingame.server.generic.flags		= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
@@ -301,6 +322,7 @@ void InGame_MenuInit( void ) {
 	Menu_AddItem( &s_ingame.menu, &s_ingame.removebots );
 	Menu_AddItem( &s_ingame.menu, &s_ingame.teamorders );
 	Menu_AddItem( &s_ingame.menu, &s_ingame.setup );
+	Menu_AddItem( &s_ingame.menu, &s_ingame.camera );
 	Menu_AddItem( &s_ingame.menu, &s_ingame.server );
 	Menu_AddItem( &s_ingame.menu, &s_ingame.restart );
 	Menu_AddItem( &s_ingame.menu, &s_ingame.resume );

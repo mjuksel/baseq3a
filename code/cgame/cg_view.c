@@ -240,6 +240,11 @@ static void CG_OffsetThirdPersonView( void ) {
 	VectorMA( view, -cg_thirdPersonRange.value * forwardScale, forward, view );
 	VectorMA( view, -cg_thirdPersonRange.value * sideScale, right, view );
 
+	// move camera left/right
+	VectorMA( view, cg_thirdPersonSlide.value, right, view );
+	// move camera up/down
+	view[2] += cg_thirdPersonHeight.value;
+
 	// trace a ray from the origin to the viewpoint to make sure the view isn't
 	// in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
 

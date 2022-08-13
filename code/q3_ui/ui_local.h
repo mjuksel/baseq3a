@@ -350,6 +350,12 @@ extern void UI_ControlsMenu( void );
 extern void Controls_Cache( void );
 
 //
+// ui_camera.c
+//
+extern void UI_CameraMenu( void );
+extern void Camera_Cache( void );
+
+//
 // ui_demo2.c
 //
 extern void UI_DemosMenu( void );

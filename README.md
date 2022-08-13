@@ -26,10 +26,14 @@ Unofficial Quake III Arena gamecode patch
    * up to 256 maps per gametype
    * end of array bug fixed
  * rainbow bloodtrails in preferences
+ * added camera menu
+   * toggle between first/third person camera
+   * adjust angle, range, height and panning of the 3rd person camera
 
 # TODO:
 
  * bugfixes
+ * fix crosshair offset stuff (shots don't land presicely on the crosshair)
 
 # Documentation
 

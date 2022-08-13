@@ -108,9 +108,29 @@ cg_fovAdjust <0|1>
 
 
 ========================
+cg_rainbowBlood <0|1>
+
+    turn blood into a spree of random colors
+
+
+========================
+cg_thirdPersonHeight <value>
+
+    height of third person view
+
+
+========================
+cg_thirdPersonSlide <value>
+
+    offset the third person camera left or right
+
+
+========================
 cg_gunX
 cg_gunY
 cg_gunZ
+cg_thirdPersonAngle
+cg_thirdPersonRange
 
     turned into non-cheat cvars
 

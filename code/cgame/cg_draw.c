@@ -2016,9 +2016,10 @@ static void CG_DrawCrosshair( void ) {
 		return;
 	}
 
-	if ( cg.renderingThirdPerson ) {
-		return;
-	}
+	// enable crosshair in 3rd person
+	// if ( cg.renderingThirdPerson ) {
+	// 	return;
+	// }
 
 	// set color based on health
 	if ( cg_crosshairHealth.integer ) {
@@ -2110,9 +2111,11 @@ static void CG_DrawCrosshairNames( void ) {
 	if ( !cg_drawCrosshairNames.integer ) {
 		return;
 	}
-	if ( cg.renderingThirdPerson ) {
-		return;
-	}
+
+	// enable crosshair names in 3rd person
+	// if ( cg.renderingThirdPerson ) {
+	// 	return;
+	// }
 
 	// scan the known entities to see if the crosshair is sighted on one
 	CG_ScanForCrosshairEntity();
