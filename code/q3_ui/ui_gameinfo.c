@@ -11,7 +11,9 @@
 // arena and bot info
 //
 
-#define POOLSIZE	128 * 1024
+#define DIRLIST_SIZE	16384
+#define POOLSIZE	128 * DIRLIST_SIZE
+
 
 int				ui_numBots;
 static char		*ui_botInfos[MAX_BOTS];
@@ -117,24 +119,24 @@ int UI_ParseInfos( char *buf, int max, char *infos[] ) {
 UI_LoadArenasFromFile
 ===============
 */
-static void UI_LoadArenasFromFile( const char *filename ) {
+static void UI_LoadArenasFromFile( char *filename ) {
 	int				len;
 	fileHandle_t	f;
 	char			buf[MAX_ARENAS_TEXT];
 
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
-	if ( f == FS_INVALID_HANDLE ) {
+	if ( !f ) {
 		trap_Print( va( S_COLOR_RED "file not found: %s\n", filename ) );
 		return;
 	}
-	if ( len >= sizeof( buf ) ) {
-		trap_Print( va( S_COLOR_RED "file too large: %s is %i, max allowed is %i", filename, len, sizeof( buf ) ) );
+	if ( len >= MAX_ARENAS_TEXT ) {
+		trap_Print( va( S_COLOR_RED "file too large: %s is %i, max allowed is %i", filename, len, MAX_ARENAS_TEXT ) );
 		trap_FS_FCloseFile( f );
 		return;
 	}
 
 	trap_FS_Read( buf, len, f );
-	buf[len] = '\0';
+	buf[len] = 0;
 	trap_FS_FCloseFile( f );
 
 	ui_numArenas += UI_ParseInfos( buf, MAX_ARENAS - ui_numArenas, &ui_arenaInfos[ui_numArenas] );
@@ -150,7 +152,7 @@ static void UI_LoadArenas( void ) {
 	int			numdirs;
 	vmCvar_t	arenasFile;
 	char		filename[128];
-	char		dirlist[8192];
+	char		dirlist[DIRLIST_SIZE];
 	char*		dirptr;
 	int			i, n;
 	int			dirlen;
@@ -169,8 +171,7 @@ static void UI_LoadArenas( void ) {
 	}
 
 	// get all arenas from .arena files
-	numdirs = trap_FS_GetFileList( "scripts", ".arena", dirlist, sizeof( dirlist ) );
-
+	numdirs = trap_FS_GetFileList("scripts", ".arena", dirlist, DIRLIST_SIZE );
 	dirptr  = dirlist;
 	for (i = 0; i < numdirs; i++, dirptr += dirlen+1) {
 		dirlen = strlen(dirptr);
@@ -308,13 +309,13 @@ const char *UI_GetSpecialArenaInfo( const char *tag ) {
 UI_LoadBotsFromFile
 ===============
 */
-static void UI_LoadBotsFromFile( const char *filename ) {
+static void UI_LoadBotsFromFile( char *filename ) {
 	int				len;
 	fileHandle_t	f;
 	char			buf[MAX_BOTS_TEXT];
 
 	len = trap_FS_FOpenFile( filename, &f, FS_READ );
-	if ( f == FS_INVALID_HANDLE ) {
+	if ( !f ) {
 		trap_Print( va( S_COLOR_RED "file not found: %s\n", filename ) );
 		return;
 	}
@@ -342,22 +343,23 @@ static void UI_LoadBots( void ) {
 	vmCvar_t	botsFile;
 	int			numdirs;
 	char		filename[128];
-	char		dirlist[2048];
+	char		dirlist[1024];
 	char*		dirptr;
 	int			i;
 	int			dirlen;
 
 	ui_numBots = 0;
 
-	trap_Cvar_Register( &botsFile, "g_botsFile", "", CVAR_ARCHIVE | CVAR_LATCH );
-	if ( *botsFile.string && trap_Cvar_VariableValue( "ui_gametype" ) != GT_SINGLE_PLAYER ) {
-		UI_LoadBotsFromFile( botsFile.string );
-	} else {
-		UI_LoadBotsFromFile( "scripts/bots.txt" );
+	trap_Cvar_Register( &botsFile, "g_botsFile", "", CVAR_INIT|CVAR_ROM );
+	if( *botsFile.string ) {
+		UI_LoadBotsFromFile(botsFile.string);
+	}
+	else {
+		UI_LoadBotsFromFile("scripts/bots.txt");
 	}
 
 	// get all bots from .bot files
-	numdirs = trap_FS_GetFileList( "scripts", ".bot", dirlist, sizeof( dirlist ) );
+	numdirs = trap_FS_GetFileList("scripts", ".bot", dirlist, 1024 );
 	dirptr  = dirlist;
 	for (i = 0; i < numdirs; i++, dirptr += dirlen+1) {
 		dirlen = strlen(dirptr);
@@ -641,7 +643,7 @@ Returns the next level the player has not won
 */
 int UI_GetCurrentGame( void ) {
 	int		level;
-	int		rank = 0;
+	int		rank;
 	int		skill;
 	const char *info;
 
