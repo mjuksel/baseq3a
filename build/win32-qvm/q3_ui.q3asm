@@ -1,5 +1,5 @@
 ui_main
-..\..\..\..\code\q3_ui\ui_syscalls
+..\..\code\q3_ui\ui_syscalls
 ui_addbots
 ui_atoms
 ui_camera

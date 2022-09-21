@@ -1,21 +1,27 @@
 @echo off
 
+@REM rmdir /S /Q vm
+
 rem make sure we have a safe environement
 set LIBRARY=
 set INCLUDE=
 
-set cgamedir=..\..\..\..\code\cgame
-set gamedir=..\..\..\..\code\game
-set uidir=..\..\..\..\code\q3_ui
+set code_dir=..\..\code
+set cgamedir=%code_dir%\cgame
+set gamedir=%code_dir%\game
+set uidir=%code_dir%\q3_ui
 
 set tooldir=%~dp0tools\
-set pk3=%~dp0pak8a.pk3
+
+set q3folder=C:\Games\quake3\Xx
+set vm_pk3=%q3folder%\mymod\pak8vm.pk3
+set assets_pk3=%q3folder%\mymod\pak8assets.pk3
 
 set cc1=%tooldir%q3lcc -DQ3_VM -DCGAME  -S -Wf-g -I%cgamedir% -I%gamedir% %1
 set cc2=%tooldir%q3lcc -DQ3_VM -DQAGAME -S -Wf-g -I%gamedir% %1
 set cc3=%tooldir%q3lcc -DQ3_VM -DQ3UI   -S -Wf-g -I%uidir% -I%gamedir% %1
 
-rem its important to set -vq3 flag for new q3asm 
+rem its important to set -vq3 flag for new q3asm
 rem or qvm's will not run on original 1.32c binaries
 set as1=%tooldir%q3asm -vq3 -r -m -v -o cgame -f %~dp0\cgame
 set as2=%tooldir%q3asm -vq3 -r -m -v -o qagame -f %~dp0\game
@@ -99,11 +105,11 @@ mkdir vm\game
 cd vm\game
 @if errorlevel 1 goto quit
 
-%cc2% %gamedir%\g_main.c 
+%cc2% %gamedir%\g_main.c
 @if errorlevel 1 goto quit
-%cc2% %gamedir%\ai_chat.c 
+%cc2% %gamedir%\ai_chat.c
 @if errorlevel 1 goto quit
-%cc2% %gamedir%\ai_cmd.c 
+%cc2% %gamedir%\ai_cmd.c
 @if errorlevel 1 goto quit
 %cc2% %gamedir%\ai_dmnet.c
 @if errorlevel 1 goto quit
@@ -117,11 +123,11 @@ cd vm\game
 @if errorlevel 1 goto quit
 %cc2% %gamedir%\bg_lib.c
 @if errorlevel 1 goto quit
-%cc2% %gamedir%\bg_misc.c 
+%cc2% %gamedir%\bg_misc.c
 @if errorlevel 1 goto quit
 %cc2% %gamedir%\bg_pmove.c
 @if errorlevel 1 goto quit
-%cc2% %gamedir%\bg_slidemove.c 
+%cc2% %gamedir%\bg_slidemove.c
 @if errorlevel 1 goto quit
 %cc2% %gamedir%\g_active.c
 @if errorlevel 1 goto quit
@@ -266,10 +272,10 @@ cd vm\ui
 @if errorlevel 1 goto quit
 %cc3% %uidir%\ui_teamorders.c
 @if errorlevel 1 goto quit
-%cc3% %uidir%\ui_video.c  
+%cc3% %uidir%\ui_video.c
 @if errorlevel 1 goto quit
 
-%cc3% %gamedir%\bg_lib.c 
+%cc3% %gamedir%\bg_lib.c
 @if errorlevel 1 goto quit
 %cc3% %gamedir%\bg_misc.c
 @if errorlevel 1 goto quit
@@ -289,12 +295,10 @@ copy vm\ui\ui.jts vm
 copy vm\game\qagame.jts vm
 copy vm\cgame\cgame.jts vm
 
-%tooldir%7za.exe a -tzip -mx=9 -mpass=8 -mfb=255 -- %pk3% vm\*.*
-rem rmdir /S /Q vm
+%tooldir%7za.exe a -tzip -mx=9 -mpass=8 -mfb=255 -- %vm_pk3% vm\*.*
+rmdir /S /Q vm
 
-cd ..\..\assets
-@if errorlevel 1 goto quit
-%tooldir%7za.exe a -tzip -mx=9 -mpass=8 -mfb=255 -r -- %pk3% *.*
+@REM cd ..\..\assets
 
 :quit
-pause
+@REM pause

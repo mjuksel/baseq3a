@@ -1,5 +1,5 @@
 g_main
-../../../../code/game/g_syscalls
+../../code/game/g_syscalls
 ai_chat
 ai_cmd
 ai_dmnet
