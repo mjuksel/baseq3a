@@ -181,8 +181,8 @@ static void Camera_MenuInit(void){
 	s_camera.rangeSlider.generic.id=ID_RANGE;
 	s_camera.rangeSlider.generic.x=SCREEN_WIDTH/2;
 	s_camera.rangeSlider.generic.y=y;
-	s_camera.rangeSlider.minvalue=31;
-	s_camera.rangeSlider.maxvalue=69;
+	s_camera.rangeSlider.minvalue=350;
+	s_camera.rangeSlider.maxvalue=750;
 
 	y+=20;
 	s_camera.heightSlider.generic.type=MTYPE_SLIDER;
@@ -192,8 +192,8 @@ static void Camera_MenuInit(void){
 	s_camera.heightSlider.generic.id=ID_HEIGHT;
 	s_camera.heightSlider.generic.x=SCREEN_WIDTH/2;
 	s_camera.heightSlider.generic.y=y;
-	s_camera.heightSlider.minvalue=-20;
-	s_camera.heightSlider.maxvalue=20;
+	s_camera.heightSlider.minvalue=0;
+	s_camera.heightSlider.maxvalue=0;
 
 	y+=20;
 	s_camera.slideSlider.generic.type=MTYPE_SLIDER;
@@ -203,8 +203,8 @@ static void Camera_MenuInit(void){
 	s_camera.slideSlider.generic.id=ID_SLIDE;
 	s_camera.slideSlider.generic.x=SCREEN_WIDTH/2;
 	s_camera.slideSlider.generic.y=y;
-	s_camera.slideSlider.minvalue=-30;
-	s_camera.slideSlider.maxvalue=30;
+	s_camera.slideSlider.minvalue=-60;
+	s_camera.slideSlider.maxvalue=60;
 
 	y+=20;
 	s_camera.angleSlider.generic.type=MTYPE_SLIDER;
@@ -215,7 +215,7 @@ static void Camera_MenuInit(void){
 	s_camera.angleSlider.generic.x=SCREEN_WIDTH/2;
 	s_camera.angleSlider.generic.y=y;
 	s_camera.angleSlider.minvalue=0;
-	s_camera.angleSlider.maxvalue=359;
+	s_camera.angleSlider.maxvalue=0;
 
 	s_camera.back.generic.type=MTYPE_BITMAP;
 	s_camera.back.generic.name=ART_BACK0;

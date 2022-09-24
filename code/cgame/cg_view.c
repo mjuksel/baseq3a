@@ -214,34 +214,18 @@ static void CG_OffsetThirdPersonView( void ) {
 
 	VectorCopy( cg.refdefViewAngles, focusAngles );
 
-	// if dead, look at killer
-	if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 ) {
-		focusAngles[YAW] = cg.predictedPlayerState.stats[STAT_DEAD_YAW];
-		cg.refdefViewAngles[YAW] = cg.predictedPlayerState.stats[STAT_DEAD_YAW];
-	}
-
-	if ( focusAngles[PITCH] > 45 ) {
-		focusAngles[PITCH] = 45;		// don't go too far overhead
-	}
 	AngleVectors( focusAngles, forward, NULL, NULL );
 
 	VectorMA( cg.refdef.vieworg, FOCUS_DISTANCE, forward, focusPoint );
 
 	VectorCopy( cg.refdef.vieworg, view );
 
-	view[2] += 8;
-
-	cg.refdefViewAngles[PITCH] *= 0.5;
-
 	AngleVectors( cg.refdefViewAngles, forward, right, up );
 
-	forwardScale = cos( cg_thirdPersonAngle.value / 180 * M_PI );
-	sideScale = sin( cg_thirdPersonAngle.value / 180 * M_PI );
-	VectorMA( view, -cg_thirdPersonRange.value * forwardScale, forward, view );
-	VectorMA( view, -cg_thirdPersonRange.value * sideScale, right, view );
-
+	// move camera away from character
+	view[0] -= cg_thirdPersonRange.value;
 	// move camera left/right
-	VectorMA( view, cg_thirdPersonSlide.value, right, view );
+	view[1] += cg_thirdPersonSlide.value;
 	// move camera up/down
 	view[2] += cg_thirdPersonHeight.value;
 
@@ -267,12 +251,10 @@ static void CG_OffsetThirdPersonView( void ) {
 
 	// select pitch to look at focus point from vieword
 	VectorSubtract( focusPoint, cg.refdef.vieworg, focusPoint );
-	focusDist = sqrt( focusPoint[0] * focusPoint[0] + focusPoint[1] * focusPoint[1] );
-	if ( focusDist < 1 ) {
-		focusDist = 1;	// should never happen
-	}
-	cg.refdefViewAngles[PITCH] = -180 / M_PI * atan2( focusPoint[2], focusDist );
-	cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value;
+	cg_crosshairX.integer = ( focusPoint[YAW] / -3 );
+	cg_crosshairY.integer = ( focusPoint[ROLL] / -3 );
+	cg.refdefViewAngles[PITCH] = 0;
+	cg.refdefViewAngles[YAW] = 0;
 }
 
 
@@ -413,7 +395,7 @@ static void CG_OffsetFirstPersonView( void ) {
 	VectorAdd (origin, cg.kick_origin, origin);
 
 	// pivot the eye based on a neck length
-#if 0
+// #if 0
 	{
 #define	NECK_LENGTH		8
 	vec3_t			forward, up;
@@ -423,7 +405,7 @@ static void CG_OffsetFirstPersonView( void ) {
 	VectorMA( cg.refdef.vieworg, 3, forward, cg.refdef.vieworg );
 	VectorMA( cg.refdef.vieworg, NECK_LENGTH, up, cg.refdef.vieworg );
 	}
-#endif
+// #endif
 }
 
 //======================================================================

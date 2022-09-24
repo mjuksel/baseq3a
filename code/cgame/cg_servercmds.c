@@ -504,7 +504,11 @@ static void CG_MapRestart( void ) {
 	}
 #endif
 
-	trap_Cvar_Set( "cg_thirdPerson", "0" );
+	trap_Cvar_Set( "cg_thirdPerson", "1" );
+	trap_Cvar_Set( "cg_thirdPersonAngle", "0" );
+	trap_Cvar_Set( "cg_thirdPersonRange", "500" );
+	trap_Cvar_Set( "cg_thirdPersonHeight", "0" );
+	trap_Cvar_Set( "cg_thirdPersonSlide", "0" );
 }
 
 #ifdef MISSIONPACK

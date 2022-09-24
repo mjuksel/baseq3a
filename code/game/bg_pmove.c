@@ -1208,7 +1208,7 @@ static void PM_SetWaterLevel( void ) {
 
 	point[0] = pm->ps->origin[0];
 	point[1] = pm->ps->origin[1];
-	point[2] = pm->ps->origin[2] + MINS_Z + 1;	
+	point[2] = pm->ps->origin[2] + MINS_Z + 1; 
 	cont = pm->pointcontents( point, pm->ps->clientNum );
 
 	if ( cont & MASK_WATER ) {
@@ -1793,9 +1793,9 @@ are being updated instead of a full move
 */
 void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 	short		temp;
-	int		i;
+	int		i, tru90 = 16384;
 
-	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPINTERMISSION) {
+	if ( ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPINTERMISSION ) {
 		return;		// no view changes at all
 	}
 
@@ -1804,21 +1804,33 @@ void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 	}
 
 	// circularly clamp the angles with deltas
-	for (i=0 ; i<3 ; i++) {
+	for ( i = 0; i < 3; i++ ) {
 		temp = cmd->angles[i] + ps->delta_angles[i];
-		if ( i == PITCH ) {
+		if ( i == PITCH || i == YAW ) {
 			// don't let the player look up or down more than 90 degrees
-			if ( temp > 16000 ) {
-				ps->delta_angles[i] = (16000 - cmd->angles[i]) & 0xFFFF;
-				temp = 16000;
-			} else if ( temp < -16000 ) {
-				ps->delta_angles[i] = (-16000 - cmd->angles[i]) & 0xFFFF;
-				temp = -16000;
+			if ( temp > 0 ) {
+				if ( temp > tru90 ) {
+					ps->delta_angles[i] = ( tru90 - cmd->angles[i] ) & 0xFFFF;
+					temp = tru90;
+				}
+				if ( i == YAW ) {
+					temp = tru90;
+				}
+			} else if ( temp < 0 ) {
+				if ( temp < -tru90 ) {
+					ps->delta_angles[i] = ( -tru90 - cmd->angles[i] ) & 0xFFFF;
+					temp = -tru90;
+				}
+				if ( i == YAW ) {
+					temp = -tru90;
+				}
 			}
 		}
-		ps->viewangles[i] = SHORT2ANGLE(temp);
+		ps->viewangles[i] = SHORT2ANGLE( temp );
+		if ( SHORT2ANGLE( temp ) == 90 ) {
+			pm->cmd.forwardmove -= ( cmd->forwardmove * 2 );
+		}
 	}
-
 }
 
 
