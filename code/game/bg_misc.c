@@ -1403,6 +1403,9 @@ void BG_AddPredictableEventToPlayerstate( entity_event_t newEvent, int eventParm
 	ps->eventSequence++;
 }
 
+void BG_TouchZoomBrush( float zoomLevel ) {
+	Com_Printf("%f\n", zoomLevel );
+}
 
 /*
 ========================

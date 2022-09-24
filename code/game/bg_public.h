@@ -689,9 +689,10 @@ typedef enum {
 	ET_GRAPPLE,				// grapple hooked on wall
 	ET_TEAM,
 
-	ET_EVENTS				// any of the EV_* events can be added freestanding
+	ET_EVENTS,				// any of the EV_* events can be added freestanding
 							// by setting eType to ET_EVENTS + eventNum
 							// this avoids having to set eFlags and eventNum
+	ET_ZOOM_TRIGGER
 } entityType_t;
 
 // calculated by modulus.c for appropriate dividers:
@@ -706,6 +707,8 @@ void	BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t resu
 void	BG_AddPredictableEventToPlayerstate( entity_event_t newEvent, int eventParm, playerState_t *ps, int entityNum );
 
 void	BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad );
+
+void	BG_TouchZoomBrush( float zoomLevel );
 
 void	BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean snap );
 void	BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s, int time, qboolean snap );

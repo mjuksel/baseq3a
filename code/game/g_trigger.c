@@ -192,6 +192,17 @@ void SP_trigger_push( gentity_t *self ) {
 	trap_LinkEntity (self);
 }
 
+void trigger_zoom_touch( gentity_t* self, gentity_t* other, trace_t* trace ) {
+	if ( !other->client ) return;
+	BG_TouchZoomBrush( self->zoom );
+}
+
+void SP_trigger_zoom( gentity_t *self ) {
+	InitTrigger( self );
+	self->s.eType = ET_ZOOM_TRIGGER;
+	self->touch = trigger_zoom_touch;
+	trap_LinkEntity( self );
+}
 
 void Use_target_push( gentity_t *self, gentity_t *other, gentity_t *activator ) {
 	if ( !activator->client ) {

@@ -98,6 +98,8 @@ struct gentity_s {
 
 	int			timestamp;		// body queue sinking, etc
 
+	float		zoom;
+
 	float		angle;			// set in editor, -1 = up, -2 = down
 	const char	*target;
 	const char	*targetname;
